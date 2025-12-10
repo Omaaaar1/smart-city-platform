@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # 1. Service SOAP (Air)
+  soap-air:
+    build: ./service-soap-air
+    ports:
+      - "8001:8001"
+    networks:
+      - smart-city-net
+
+  # 2. Service GraphQL (Trafic)
+  graphql-traffic:
+    build: ./service-graphql-user
+    ports:
+      - "5000:5000"
+    networks:
+      - smart-city-net
+
+  # 3. Service REST (Mobilité)
+  rest-mobility:
+    build: ./service-rest-mobility
+    ports:
+      - "8002:8002"
+    networks:
+      - smart-city-net
+
+  # 4. Service gRPC (Énergie)
+  grpc-energy:
+    build: ./service-grpc-emergency
+    ports:
+      - "50051:50051"
+    networks:
+      - smart-city-net
+
+  # 5. API Gateway (Le Chef)
+  gateway:
+    build: ./api-gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - soap-air
+      - graphql-traffic
+      - rest-mobility
+      - grpc-energy
+    networks:
+      - smart-city-net
+    # On injecte les nouvelles adresses ici pour écraser celles du code Python
+    environment:
+      - SOAP_URL=http://soap-air:8001/?wsdl
+      - GRAPHQL_URL=http://graphql-traffic:5000/graphql
+      - REST_URL=http://rest-mobility:8002/transports
+      - GRPC_HOST=grpc-energy:50051
+
+# Création du réseau virtuel
+networks:
+  smart-city-net:
+    driver: bridge

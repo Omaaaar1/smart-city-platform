@@ -1,0 +1,36 @@
+--- Python ---
+
+pycache/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+--- Node.js / React (Frontend) ---
+
+node_modules/
+build/
+dist/
+.npm
+.eslintcache
+
+--- IDE (Configuration Editeur) ---
+
+.idea/
+.vscode/
+*.swp
+*.swo
+
+--- OS ---
+
+.DS_Store
+Thumbs.db
+
+--- Docker ---
+
+On garde les Dockerfiles et docker-compose.yml, mais on ignore les logs
+
+*.log

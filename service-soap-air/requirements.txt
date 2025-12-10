@@ -1,0 +1,6 @@
+lxml
+zeep
+werkzeug
+pytz
+# On force la version compatible Python 3.12
+git+https://github.com/arskom/spyne.git@master
